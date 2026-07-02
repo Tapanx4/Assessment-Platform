@@ -5,11 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, 
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from backend.database import get_db, SessionLocal
-from backend import models, schemas, auth
-from backend.services.tasks import task_service
-from backend.services.metrics import metrics_manager
-from backend.services.cache import cache_service
+from database import get_db, SessionLocal
+import models, schemas, auth
+from services.tasks import task_service
+from services.metrics import metrics_manager
+from services.cache import cache_service
 
 logger = logging.getLogger(__name__)
 

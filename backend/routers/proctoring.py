@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File,
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, and_
-from backend.database import get_db
-from backend import models, schemas, auth, supabase_client
-from backend.routers.auth import get_current_admin, get_current_user
+from database import get_db
+import models, schemas, auth, supabase_client
+from routers.auth import get_current_admin, get_current_user
 
 router = APIRouter(prefix="/proctoring", tags=["Proctoring"])
 
@@ -123,7 +123,7 @@ async def log_violation_event(
     
     db.close()
     
-    from backend.services.tasks import task_service
+    from services.tasks import task_service
     task_service.queue_violation_log(
         background_tasks,
         attempt_id,
@@ -226,7 +226,7 @@ async def upload_violation_screenshot(
         
     signed_url = supabase_client.get_screenshot_signed_url(screenshot_path)
     
-    from backend.services.tasks import task_service
+    from services.tasks import task_service
     task_service.queue_screenshot_violation_log(
         background_tasks,
         attempt_id,

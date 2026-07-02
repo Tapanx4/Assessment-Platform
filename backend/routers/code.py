@@ -1,10 +1,10 @@
 import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session, joinedload
-from backend.database import get_db
-from backend import models, schemas
-from backend.routers.auth import get_current_user
-from backend.services.code_execution import CodeExecutionService
+from database import get_db
+import models, schemas
+from routers.auth import get_current_user
+from services.code_execution import CodeExecutionService
 
 router = APIRouter(prefix="/code", tags=["Code Sandbox"])
 execution_service = CodeExecutionService()
@@ -132,13 +132,13 @@ async def update_telemetry(
 
     db.close()
 
-    from backend.services.event_buffer import event_buffer
+    from services.event_buffer import event_buffer
     await event_buffer.add_telemetry(payload.attempt_id, payload.question_id, event_type, paste_length)
 
     if is_large_paste:
         details = f"Large code paste detected on Question ID {payload.question_id} ({paste_length} chars)."
         
-        from backend.services.tasks import task_service
+        from services.tasks import task_service
         task_service.queue_violation_log(
             background_tasks,
             payload.attempt_id,
@@ -147,7 +147,7 @@ async def update_telemetry(
             details
         )
         
-        from backend.routers.proctoring import manager
+        from routers.proctoring import manager
         event_payload = {
             "type": "violation_triggered",
             "violation": {

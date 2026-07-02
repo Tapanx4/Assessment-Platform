@@ -8,12 +8,12 @@ logger = logging.getLogger(__name__)
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload, selectinload
-from backend.database import SessionLocal, get_db
-from backend import models, schemas, auth
-from backend.routers.auth import get_current_admin, get_current_user
-from backend.services.tasks import task_service
-from backend.services.metrics import metrics_manager
-from backend.services.cache import cache_service
+from database import SessionLocal, get_db
+import models, schemas, auth
+from routers.auth import get_current_admin, get_current_user
+from services.tasks import task_service
+from services.metrics import metrics_manager
+from services.cache import cache_service
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 attempts_router = APIRouter(prefix="/attempts", tags=["Attempts"])
@@ -132,7 +132,7 @@ def build_submission_jobs(questions: List[dict], candidate_answers: Dict[str, An
 
 
 async def finalize_coding_scores(attempt_id: int, base_score: int, coding_jobs: List[Dict[str, Any]]) -> None:
-    from backend.services.code_execution import CodeExecutionService
+    from services.code_execution import CodeExecutionService
 
     execution_service = CodeExecutionService()
     final_score = base_score

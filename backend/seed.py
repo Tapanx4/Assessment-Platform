@@ -5,8 +5,8 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-from backend.database import SessionLocal
-from backend import models, auth
+from database import SessionLocal
+import models, auth
 
 def seed_admin():
     db = SessionLocal()

@@ -1,8 +1,8 @@
 import os
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from backend.database import engine, Base
-from backend.routers import auth, institutes, assessments, proctoring, reports, code
+from database import engine, Base
+from routers import auth, institutes, assessments, proctoring, reports, code
 
 Base.metadata.create_all(bind=engine)
 
@@ -51,7 +51,7 @@ def health_check():
 import time
 from fastapi import Request
 from sqlalchemy import text
-from backend import database
+import database
 
 REQUEST_COUNT = 0
 ERROR_COUNT = 0
@@ -171,17 +171,17 @@ def get_diagnostics_stats():
 
 
 from fastapi.responses import PlainTextResponse
-from backend.services.metrics import metrics_manager
+from services.metrics import metrics_manager
 
 @app.on_event("startup")
 async def startup_event():
     import asyncio
-    from backend.services.event_buffer import event_buffer
+    from services.event_buffer import event_buffer
     asyncio.create_task(event_buffer.start_loop())
 
 @app.get("/metrics")
 def get_metrics():
-    from backend.database import engine, bg_engine
+    from database import engine, bg_engine
     
     pool = engine.pool
     metrics_manager.set_gauge("db_pool_checked_out", pool.checkedout())

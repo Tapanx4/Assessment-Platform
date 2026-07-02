@@ -2,15 +2,15 @@ import datetime
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from backend.database import get_db
-from backend import models, schemas
-from backend.routers.auth import get_current_admin, get_current_user
+from database import get_db
+import models, schemas
+from routers.auth import get_current_admin, get_current_user
 
 router = APIRouter(prefix="/institutes", tags=["Institutes"])
 
 @router.get("", response_model=List[schemas.InstituteResponse])
 def get_institutes(db: Session = Depends(get_db)):
-    from backend.services.cache import cache_service
+    from services.cache import cache_service
     cached_res = cache_service.get("institutes_list")
     if cached_res:
         db.close()
@@ -43,7 +43,7 @@ def create_institute(inst_data: schemas.InstituteCreate, db: Session = Depends(g
     db.commit()
     db.refresh(db_inst)
     
-    from backend.services.cache import cache_service
+    from services.cache import cache_service
     cache_service.invalidate("institutes_list")
     
     db.close()
@@ -70,7 +70,7 @@ def update_institute(id: int, inst_data: schemas.InstituteCreate, db: Session = 
     db.commit()
     db.refresh(db_inst)
     
-    from backend.services.cache import cache_service
+    from services.cache import cache_service
     cache_service.invalidate("institutes_list")
     cache_service.invalidate(f"institute:{id}")
     
@@ -86,7 +86,7 @@ def delete_institute(id: int, db: Session = Depends(get_db), admin: models.User 
     db_inst.deleted_at = datetime.datetime.utcnow()
     db.commit()
     
-    from backend.services.cache import cache_service
+    from services.cache import cache_service
     cache_service.invalidate("institutes_list")
     cache_service.invalidate(f"institute:{id}")
     

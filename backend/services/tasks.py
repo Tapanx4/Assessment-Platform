@@ -5,9 +5,9 @@ import datetime
 from typing import Optional, List, Dict, Any
 from fastapi import BackgroundTasks
 from concurrent.futures import ThreadPoolExecutor
-from backend.database import BgSessionLocal
-from backend import models
-from backend.services.code_execution import CodeExecutionService
+from database import BgSessionLocal
+import models
+from services.code_execution import CodeExecutionService
 
 logger = logging.getLogger(__name__)
 

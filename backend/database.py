@@ -253,7 +253,7 @@ BgSessionLocal = sessionmaker(class_=TimedSession if DEBUG else Session, autocom
 Base = declarative_base()
 
 def get_db():
-    from backend.services.metrics import metrics_manager
+    from services.metrics import metrics_manager
     import time
     start = time.perf_counter()
     db = SessionLocal()

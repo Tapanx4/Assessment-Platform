@@ -1,8 +1,8 @@
 import asyncio
 import logging
 from typing import Dict, Optional, Tuple
-from backend.database import BgSessionLocal
-from backend import models
+from database import BgSessionLocal
+import models
 
 logger = logging.getLogger(__name__)
 

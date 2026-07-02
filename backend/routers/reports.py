@@ -2,10 +2,10 @@ import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, cast, Date
-from backend.database import get_db
-from backend import models, schemas
-from backend.routers.auth import get_current_admin, get_current_user
-from backend.supabase_client import get_screenshots_signed_urls
+from database import get_db
+import models, schemas
+from routers.auth import get_current_admin, get_current_user
+from supabase_client import get_screenshots_signed_urls
 from typing import List
 
 
