@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-from backend import models
+import models
 
 SECRET_KEY = os.getenv("SECRET_KEY", "assesspro_ai_deep_indigo_mission_control_2026")
 ALGORITHM = "HS256"
